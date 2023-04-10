@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-contract SweepstakesVoting {
+import {IVotingStrategy} from "allo/votingStrategy/IVotingStrategy.sol";
+
+contract SweepstakesVoting is IVotingStrategy {
 
 }

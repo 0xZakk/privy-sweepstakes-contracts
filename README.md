@@ -25,7 +25,7 @@ forge test
 
 The following outline the requirements for the custom sweepstakes voting and
 payout strategy. The actual implementation can be found in the smart contracts
-themselves. 
+themselves.
 
 ### [Sweepstake Voting Token](./src/Token.sol)
 
@@ -42,7 +42,7 @@ some limitations on it.
 - Tokens can only be minted 10 to a user
 - An address can only receive tokens once (i.e. one allotment of 10 tokens)
 - The token should generally be non-transferable unless that transfer is voting
-    in a round
+  in a round
 
 ### [Sweepstake Voting Strategy](./src/Voting.sol)
 
@@ -57,8 +57,8 @@ the sweepstakes at the end.
 **Requirements:**
 
 - Voting is limited to the three partners, selected by Privy.
-- Only holders of the specific token can vote. All other votes are rejected. 
-- The voting token is otherwise not transferable 
+- Only holders of the specific token can vote. All other votes are rejected.
+- The voting token is otherwise not transferable
 
 ### [Sweepstake Payout Strategy](./src/Payout.sol)
 
