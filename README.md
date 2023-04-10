@@ -1,5 +1,8 @@
-<img align="right" width="150" height="150" top="100" src="./public/privy.svg">
 <img align="right" width="150" height="150" top="100" src="./public/gitcoin.svg">
+<img align="right" width="150" height="150" top="100" src="./public/privy.svg">
+
+<br>
+<hr>
 
 # Privy x Gitcoin Allo Sweepstake
 
