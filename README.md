@@ -1,15 +1,9 @@
-<img align="right" width="150" height="150" top="100" src="./public/gitcoin.svg">
-<img align="right" width="150" height="150" top="100" src="./public/privy.svg">
-
-<br>
-<hr>
-
-# Privy x Gitcoin Allo Sweepstake
+# Privy x Gitcoin Allo Sweepstakes
 
 This repository implements a [Voting
 Strategy](https://docs.allo.gitcoin.co/core-concepts/voting-strategy) and
 [Payout Strategy](https://docs.allo.gitcoin.co/core-concepts/payout-strategy)
-for the upcoming Privy public goods sweepstake.
+for the upcoming Privy Public Goods Sweepstakes.
 
 ### Usage
 
@@ -29,7 +23,7 @@ forge test
 
 ## Specification
 
-The following outline the requirements for the custom sweepstake voting and
+The following outline the requirements for the custom sweepstakes voting and
 payout strategy. The actual implementation can be found in the smart contracts
 themselves. 
 
