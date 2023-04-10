@@ -1,55 +1,82 @@
-<img align="right" width="150" height="150" top="100" src="./public/readme.jpg">
+<img align="right" width="150" height="150" top="100" src="./public/privy.svg">
+<img align="right" width="150" height="150" top="100" src="./public/gitcoin.svg">
 
-# femplate • [![tests](https://github.com/refcell/femplate/actions/workflows/ci.yml/badge.svg?label=tests)](https://github.com/refcell/femplate/actions/workflows/ci.yml) ![license](https://img.shields.io/github/license/refcell/femplate?label=license) ![solidity](https://img.shields.io/badge/solidity-^0.8.17-lightgrey)
+# Privy x Gitcoin Allo Sweepstake
 
-A **Clean**, **Robust** Template for Foundry Projects.
+This repository implements a [Voting
+Strategy](https://docs.allo.gitcoin.co/core-concepts/voting-strategy) and
+[Payout Strategy](https://docs.allo.gitcoin.co/core-concepts/payout-strategy)
+for the upcoming Privy public goods sweepstake.
 
 ### Usage
 
 **Building & Testing**
 
-Build the foundry project with `forge build`. Then you can run tests with `forge test`.
+You can build the smart contracts with the following command:
 
-**Deployment & Verification**
-
-Inside the [`utils/`](./utils/) directory are a few preconfigured scripts that can be used to deploy and verify contracts.
-
-Scripts take inputs from the cli, using silent mode to hide any sensitive information.
-
-_NOTE: These scripts are required to be _executable_ meaning they must be made executable by running `chmod +x ./utils/*`._
-
-_NOTE: these scripts will prompt you for the contract name and deployed addresses (when verifying). Also, they use the `-i` flag on `forge` to ask for your private key for deployment. This uses silent mode which keeps your private key from being printed to the console (and visible in logs)._
-
-
-### I'm new, how do I get started?
-
-We created a guide to get you started with: [GETTING_STARTED.md](./GETTING_STARTED.md).
-
-
-### Blueprint
-
-```txt
-lib
-├─ forge-std — https://github.com/foundry-rs/forge-std
-├─ solmate — https://github.com/transmissions11/solmate
-scripts
-├─ Deploy.s.sol — Example Contract Deployment Script
-src
-├─ Greeter — Example Contract
-test
-└─ Greeter.t — Example Contract Tests
+```sh
+forge build
 ```
 
+Use the following command to run the tests:
 
-### Notable Mentions
+```sh
+forge test
+```
 
-- [femplate](https://github.com/refcell/femplate)
-- [foundry](https://github.com/foundry-rs/foundry)
-- [solmate](https://github.com/Rari-Capital/solmate)
-- [forge-std](https://github.com/brockelmore/forge-std)
-- [forge-template](https://github.com/foundry-rs/forge-template)
-- [foundry-toolchain](https://github.com/foundry-rs/foundry-toolchain)
+## Specification
 
+The following outline the requirements for the custom sweepstake voting and
+payout strategy. The actual implementation can be found in the smart contracts
+themselves. 
+
+### [Sweepstake Voting Token](./src/Token.sol)
+
+**Description:**
+
+The voting token is a fairly standard ERC20 token (this one is based on
+Solmate's implementation). It has a few unique constraints in that we don't want
+people to be able to do anything other than vote with it. So transferring has
+some limitations on it.
+
+**Requirements:**
+
+- Only the owner (admin) can mint new tokens
+- Tokens can only be minted 10 to a user
+- An address can only receive tokens once (i.e. one allotment of 10 tokens)
+- The token should generally be non-transferable unless that transfer is voting
+    in a round
+
+### [Sweepstake Voting Strategy](./src/Voting.sol)
+
+**Description:**
+
+The voting strategy is how users will vote on which project should
+win the sweepstake. Votes go through the round, so the voting strategy can't be
+called directly itself. The voting strategy emits an event for each vote. It
+also records and tallies votes, which are used by the Payout Strategy to payout
+the sweepstakes at the end.
+
+**Requirements:**
+
+- Voting is limited to the three partners, selected by Privy.
+- Only holders of the specific token can vote. All other votes are rejected. 
+- The voting token is otherwise not transferable 
+
+### [Sweepstake Payout Strategy](./src/Payout.sol)
+
+**Description:**
+
+The payout strategy looks at the three selected grantees and their distribution
+of the voting token and pays out the matching pool according to that
+distribution, by percentage. So if a grantee received 30% of the votes, they'll
+receive 30% of the matching pool. Distribution should be on votes rather than
+token supply because some people who sign up and receive tokens may not vote.
+
+**Requirements:**
+
+- Divides payments according to distribution of votes cast.
+- Only sends out three payments (one for each of the accepted grantees)
 
 ### Disclaimer
 
