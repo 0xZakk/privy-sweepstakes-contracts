@@ -9,6 +9,8 @@ import "solmate/auth/Owned.sol";
 /// @notice This is a single-use token meant solely for the Privy Public Goods Sweepstakes. When users sign up, they will receive 10 tokens, which they can use to vote on who should win the sweepstakes.
 /// @dev This contract is based on Solmate's ERC20 and Owned contracts. Most actions are limited to just the owner (like mint and burn). Furthermore, most transfers are blocked, unless they are to a whitelisted recipient. That is to prevent sybil attacks where someone accumulates a lot of tokens and to prevent someone setting up a liquidity pool.
 contract SweepstakesToken is ERC20, Owned {
+    // @TODO: add role for minter so Privy can create bot wallets for
+    // distributing the token
     mapping(address => bool) public whitelist;
     mapping(address => bool) public minted;
 
