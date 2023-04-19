@@ -80,6 +80,8 @@ contract SweepstakesToken is ERC20, Ownable2Step, AccessControl {
     /// @param _address The address to add to the whitelist
     function addWhitelist(address _address) public onlyOwner {
         whitelist[_address] = true;
+
+        emit AddWhitelistAddress(_address);
     }
 
     /// @notice Add multiple addresses to the whitelist at once
@@ -88,6 +90,7 @@ contract SweepstakesToken is ERC20, Ownable2Step, AccessControl {
     function addWhitelist(address[] memory _addresses) public onlyOwner {
         for (uint256 i = 0; i < _addresses.length; i++) {
             whitelist[_addresses[i]] = true;
+            emit AddWhitelistAddress(_addresses[i]);
         }
     }
 
@@ -96,6 +99,7 @@ contract SweepstakesToken is ERC20, Ownable2Step, AccessControl {
     /// @param _address The address to remove from the whitelist
     function removeWhitelist(address _address) public onlyOwner {
         whitelist[_address] = false;
+        emit RemoveWhitelistAddress(_address);
     }
 
     /// @notice Remove multiple addresses from the whitelist at once
@@ -104,6 +108,7 @@ contract SweepstakesToken is ERC20, Ownable2Step, AccessControl {
     function removeWhitelist(address[] memory _addresses) public onlyOwner {
         for (uint256 i = 0; i < _addresses.length; i++) {
             whitelist[_addresses[i]] = false;
+            emit RemoveWhitelistAddress(_addresses[i]);
         }
     }
 
