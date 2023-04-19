@@ -1,29 +1,66 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "solmate/tokens/ERC20.sol";
-import "solmate/auth/Owned.sol";
+import "oz/token/ERC20/ERC20.sol";
+import "oz/access/Ownable2Step.sol";
+import "oz/access/AccessControl.sol";
 
 /// @title SweepstakesToken
 /// @author 0xZakk (https://twitter.com/0xZakk)
 /// @notice This is a single-use token meant solely for the Privy Public Goods Sweepstakes. When users sign up, they will receive 10 tokens, which they can use to vote on who should win the sweepstakes.
 /// @dev This contract is based on Solmate's ERC20 and Owned contracts. Most actions are limited to just the owner (like mint and burn). Furthermore, most transfers are blocked, unless they are to a whitelisted recipient. That is to prevent sybil attacks where someone accumulates a lot of tokens and to prevent someone setting up a liquidity pool.
-contract SweepstakesToken is ERC20, Owned {
-    // @TODO: add role for minter so Privy can create bot wallets for
+contract SweepstakesToken is ERC20, Ownable2Step, AccessControl {
+    ///////////////////////////////
+    ////////// Variables //////////
+    ///////////////////////////////
+
     // distributing the token
     mapping(address => bool) public whitelist;
     mapping(address => bool) public minted;
 
+    /// @notice Minter role for wallets that can mint tokens to users
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+
+    ////////////////////////////
+    ////////// Events //////////
+    ////////////////////////////
+
+    /// @notice Emit when an address is added to the whitelist
+    /// @param _address The address that was added to the whitelist
+    event AddWhitelistAddress(address _address);
+
+    /// @notice Emit when an address is removed from the whitelist
+    /// @param _address The address that was removed from the whitelist
+    event RemoveWhitelistAddress(address _address);
+
+    ////////////////////////////
+    ////////// Errors //////////
+    ////////////////////////////
+
+    ///////////////////////////////
+    ////////// Modifiers //////////
+    ///////////////////////////////
+
+    /////////////////////////////////
+    ////////// Constructor //////////
+    /////////////////////////////////
     constructor(
       string memory _name,
       string memory _symbol,
       address _owner)
-    ERC20(_name, _symbol, 0) Owned(_owner) {}
+    ERC20(_name, _symbol) {
+        // set the minter role
+        _setupRole(MINTER_ROLE, _owner);
+    }
+
+    /////////////////////////////
+    ////////// Methods //////////
+    /////////////////////////////
 
     /// @notice Mint 10 tokens to a new Privy user
     /// @dev This function is only callable by the owner. A user should only ever receive 10 tokens once.
     /// @param _to The address of the user to mint tokens to
-    function mint(address _to) public onlyOwner {
+    function mint(address _to) public onlyRole(MINTER_ROLE) {
         require(minted[_to] == false, "User already minted");
         _mint(_to, 10);
 
