@@ -3,16 +3,21 @@ pragma solidity ^0.8.17;
 
 import {Script} from 'forge-std/Script.sol';
 
-import {Greeter} from "src/Greeter.sol";
+import { SweepstakesToken } from "src/Token.sol";
+import { SweepstakesPayout } from "src/Payout.sol";
+import { SweepstakesVoting } from "src/Voting.sol";
 
 /// @notice A very simple deployment script
 contract Deploy is Script {
 
   /// @notice The main script entrypoint
-  /// @return greeter The deployed contract
-  function run() external returns (Greeter greeter) {
+  function run() external {
     vm.startBroadcast();
-    greeter = new Greeter("GM");
+
+    // @TODO: Deploy Token
+    // @TODO: Deploy Voting Strategy
+    // @TODO: Deploy Payout Strategy
+
     vm.stopBroadcast();
   }
 }
