@@ -63,7 +63,7 @@ contract StrategyTestBase is Test {
     address roundOperator2 = makeAddr("roundOperator2");
     address[] roundOperators = [roundOperator1, roundOperator2];
 
-    ERC20 token;
+    SweepstakesToken token;
     IVotingStrategy votingStrategy;
     IPayoutStrategy payoutStrategy;
 
