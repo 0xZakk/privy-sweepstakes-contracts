@@ -13,6 +13,7 @@ contract SweepstakesToken is ERC20, Ownable2Step, AccessControl {
     ///////////////////////////////
     ////////// Variables //////////
     ///////////////////////////////
+    uint256 public batchAmount;
 
     // distributing the token
     mapping(address => bool) public whitelist;
@@ -47,8 +48,10 @@ contract SweepstakesToken is ERC20, Ownable2Step, AccessControl {
     constructor(
       string memory _name,
       string memory _symbol,
-      address _owner)
-    ERC20(_name, _symbol) {
+      address _owner,
+      uint256 _batchAmount
+    ) ERC20(_name, _symbol) {
+        batchAmount = _batchAmount;
         // set the minter role
         _setupRole(MINTER_ROLE, _owner);
     }
@@ -62,7 +65,7 @@ contract SweepstakesToken is ERC20, Ownable2Step, AccessControl {
     /// @param _to The address of the user to mint tokens to
     function mint(address _to) public onlyRole(MINTER_ROLE) {
         require(minted[_to] == false, "User already minted");
-        _mint(_to, 10);
+        _mint(_to, batchAmount);
 
         minted[_to] = true;
     }
