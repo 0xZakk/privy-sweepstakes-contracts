@@ -50,6 +50,9 @@ contract StrategyTestBase is Test {
     ERC20 usdc = ERC20(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48);
 
     address owner = makeAddr("owner");
+    address minter1 = makeAddr("minter1");
+    address minter2 = makeAddr("minter2");
+    address[] minters = [minter1, minter2];
 
     address admin1 = makeAddr("admin1");
     address admin2 = makeAddr("admin2");

@@ -6,21 +6,21 @@ import "../base/Base.t.sol";
 
 contract TokenSettings is StrategyTestBase {
     // Token name matches tokenName
-    function testToken__TokenNameSetOnDeploy() public {
+    function testTokenSettings__TokenNameSetOnDeploy() public {
         assertEq(
             token.name(),
             tokenName
         );
     }
 
-    function testToken__TokenSymbolSetOnDeploy() public {
+    function testTokenSettings__TokenSymbolSetOnDeploy() public {
         assertEq(
             token.symbol(),
             tokenSymbol
         );
     }
 
-    function testToken__TokenBatchAmountSetOnDeploy() public {
+    function testTokenSettings__TokenBatchAmountSetOnDeploy() public {
         // Test the basic token
         assertEq(
             token.batchAmount(),
@@ -50,12 +50,10 @@ contract TokenSettings is StrategyTestBase {
         );
     }
 
-    function testToken__OwnerSetOnDeploy() public {
+    function testTokenSettings__OwnerSetOnDeploy() public {
         assertEq(
             token.owner(),
             owner
         );
     }
-
-    // @TODO: testing minting and transfer blocking works
 }

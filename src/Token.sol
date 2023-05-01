@@ -52,8 +52,8 @@ contract SweepstakesToken is ERC20, Ownable2Step, AccessControl {
       uint256 _batchAmount
     ) ERC20(_name, _symbol) {
         batchAmount = _batchAmount;
-        // set the minter role
-        _setupRole(MINTER_ROLE, _owner);
+        _grantRole(DEFAULT_ADMIN_ROLE, _owner);
+        _grantRole(MINTER_ROLE, _owner);
     }
 
     /////////////////////////////
@@ -121,7 +121,19 @@ contract SweepstakesToken is ERC20, Ownable2Step, AccessControl {
     /// @param _amount The amount of tokens to transfer
     function transfer(address _to, uint256 _amount) public override returns (bool) {
         require(whitelist[_to], "Transfer not allowed");
+
         return super.transfer(_to, _amount);
+    }
+
+    /// @notice Approve a spender to spend tokens on your behalf
+    /// @dev We override the approve function to ensure that only whitelisted addresses can receive tokens.
+    /// @param spender The address of the spender
+    /// @param amount The amount of tokens to approve
+    /// @return A boolean indicating whether or not the approval was successful
+    function approve(address spender, uint256 amount) public override returns (bool) {
+        require(whitelist[spender], "Transfer not allowed");
+
+        return super.approve(spender, amount);
     }
 
     /// @notice Transfer tokens from one address to another
@@ -131,7 +143,27 @@ contract SweepstakesToken is ERC20, Ownable2Step, AccessControl {
     /// @param _amount The amount of tokens to transfer
     function transferFrom(address _from, address _to, uint256 _amount) public override returns (bool) {
         require(whitelist[_to], "Transfer not allowed");
+
         return super.transferFrom(_from, _to, _amount);
+    }
+
+    /// @notice Increase the allowance of a spender
+    /// @dev We override the increaseAllowance function to ensure that only whitelisted addresses can receive tokens.
+    /// @param spender The address of the spender
+    /// @param addedValue The amount of tokens to increase the allowance by
+    /// @return A boolean indicating whether or not the increase was successful
+    function increaseAllowance(address spender, uint256 addedValue) public
+    override returns (bool) {
+        require(whitelist[spender], "Transfer not allowed");
+
+        return super.increaseAllowance(spender, addedValue);
+    }
+
+    function decreaseAllowance(address spender, uint256 subtractedValue) public
+    override returns (bool) {
+        require(whitelist[spender], "Transfer not allowed");
+
+        return super.decreaseAllowance(spender, subtractedValue);
     }
 }
 
