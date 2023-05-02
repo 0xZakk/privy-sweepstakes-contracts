@@ -67,8 +67,8 @@ contract StrategyTestBase is Test {
     address[] roundOperators = [roundOperator1, roundOperator2];
 
     SweepstakesToken token;
-    IVotingStrategy votingStrategy;
-    IPayoutStrategy payoutStrategy;
+    SweepstakesVoting votingStrategy;
+    SweepstakesPayout payoutStrategy;
 
     string tokenName = "Privy Sweepstakes Token";
     string tokenSymbol = "PST";
